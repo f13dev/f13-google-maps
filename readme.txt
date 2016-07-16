@@ -16,6 +16,12 @@ Using F13 Google Maps Shortcode you can simply embed a secton of Google Maps int
 
 In order to use this plugin you will require a Google Maps API Key, of which instructions for obtaining one are in the admin panel.
 
+Features include:
+
+* Cached using Transient to save PHP server load (Maps are still called from Google on each page load)
+* Maps can be generated using a combination of: Building, Road, Town and Country
+* Requires a Google Maps API Key, full instructions are provided in the admin panel
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
