@@ -24,7 +24,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
-add_shortcode( 'wpplugin', 'f13_google_maps_shortcode');
+add_shortcode( 'googlemap', 'f13_google_maps_shortcode');
 // Register the css
 add_action( 'wp_enqueue_scripts', 'f13_google_maps_shortcode_stylesheet');
 
