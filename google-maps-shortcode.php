@@ -25,8 +25,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 add_shortcode( 'googlemap', 'f13_google_maps_shortcode');
-// Register the css
-add_action( 'wp_enqueue_scripts', 'f13_google_maps_shortcode_stylesheet');
 // Register the admin page
 add_action('admin_menu', 'f13_gms_create_menu');
 
@@ -38,8 +36,6 @@ add_action('admin_menu', 'f13_gms_create_menu');
  */
 function f13_google_maps_shortcode( $atts, $content = null )
 {
-    $key = '';
-
     // Get the attributes
     extract( shortcode_atts ( array (
         'building' => '', // Default building of null
@@ -63,7 +59,7 @@ function f13_google_maps_shortcode( $atts, $content = null )
     else
     {
         // Multiply the cahce time by 60 to produce a time in minutes
-        $cachetime = $cachetime * 60;
+        $cachetime = esc_attr( get_option('google_maps_cache_timeout')) * 60;
         // If the cachetime is 0, set it to one, otherwise the cache will never expire
         if ($cachetime == 0 || $cachetime == null)
         {
@@ -82,7 +78,7 @@ function f13_google_maps_shortcode( $atts, $content = null )
             $mapSearch = str_replace('&', ' ', $mapSearch);
             // Set the testing string
             $string = '
-            <iframe src="https://www.google.com/maps/embed/v1/place?q=' . $mapSearch . '&key=' . $key . '" style="width: ' . $width . '; height: ' . $height . ';"></iframe>';
+            <iframe src="https://www.google.com/maps/embed/v1/place?q=' . $mapSearch . '&key=' . esc_attr( get_option('google_maps_api_key')) . '" style="width: ' . $width . '; height: ' . $height . ';"></iframe>';
             // Set the cache using the newly created string
             set_transient('f13gms' . md5(serialize($atts)), $string, $cachetime);
         }
@@ -91,16 +87,6 @@ function f13_google_maps_shortcode( $atts, $content = null )
     }
 
     // Create the shortcode
-}
-
-/**
- * A function to enqueu the stylesheet
- */
-function f13_google_maps_shortcode_stylesheet()
-{
-    // Register the stylesheet and enqueu it it load
-    wp_register_style( 'f13maps-style', plugins_url('google-maps-shortcode.css', __FILE__));
-    wp_enqueue_style( 'f13maps-style' );
 }
 
 /**
@@ -117,7 +103,7 @@ function f13_gms_create_menu()
 /**
  * A function to register the plugin settings
  */
-function f13_grs_settings()
+function f13_gms_settings()
 {
     // Register settings for token and timeout
     register_setting( 'f13-gms-settings-group', 'google_maps_api_key');
@@ -139,7 +125,7 @@ function f13_gms_settings_page()
             This plugin requires a Google Maps API key to function
         </p>
         <p>
-            To obtain a Google maps API key:
+            <h3>To obtain a Google maps API key:</h3>
             <ol>
                 <li>
                     Log-in to your Google account or register if you do not have one.
@@ -196,10 +182,12 @@ function f13_gms_settings_page()
         </form>
         <h3>Shortcode example</h3>
         <p>
-            If you wish to display a map to Harrod, London:
+            If you wish to display a map to Harrod, London:<br />
+            [googlemap building="87-135" road="Brompton road" town="London" country="UK"]
         </p>
         <p>
-            [googlemap building="87-135" road="Brompton road" town="London" country="UK"]
+            Alternatively you could use the shortcode:<br />
+            [googlemap building="Harrods" town="London"]
         </p>
     </div>
 <?php
