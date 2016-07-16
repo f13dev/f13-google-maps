@@ -27,7 +27,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 add_shortcode( 'googlemap', 'f13_google_maps_shortcode');
 // Register the css
 add_action( 'wp_enqueue_scripts', 'f13_google_maps_shortcode_stylesheet');
+// Register the admin page
+add_action('admin_menu', 'f13_gms_create_menu');
 
+/**
+ * Function to handle the shortcode
+ * @param  Array  $atts    The attributes set in the shortcode
+ * @param  [type] $content [description]
+ * @return String          The response of the shortcode
+ */
 function f13_google_maps_shortcode( $atts, $content = null )
 {
     $key = '';
@@ -85,9 +93,114 @@ function f13_google_maps_shortcode( $atts, $content = null )
     // Create the shortcode
 }
 
+/**
+ * A function to enqueu the stylesheet
+ */
 function f13_google_maps_shortcode_stylesheet()
 {
     // Register the stylesheet and enqueu it it load
     wp_register_style( 'f13maps-style', plugins_url('google-maps-shortcode.css', __FILE__));
     wp_enqueue_style( 'f13maps-style' );
+}
+
+/**
+ * A function to create the admin menu
+ */
+function f13_gms_create_menu()
+{
+    // Create the sub-level menu under settings
+    add_options_page('F13Devs Google Maps Shortcode Settings', 'F13 Google Maps Shortcode', 'administrator', 'f13-google-maps-shortcode', 'f13_gms_settings_page');
+    // Retister the Settings
+    add_action( 'admin_init', 'f13_gms_settings');
+}
+
+/**
+ * A function to register the plugin settings
+ */
+function f13_grs_settings()
+{
+    // Register settings for token and timeout
+    register_setting( 'f13-gms-settings-group', 'google_maps_api_key');
+    register_setting( 'f13-gms-settings-group', 'google_maps_cache_timeout');
+}
+
+/**
+ * A function to create the admin settings page
+ */
+function f13_gms_settings_page()
+{
+?>
+    <div class="wrap">
+        <h2>Google Maps Settings</h2>
+        <p>
+            Welcome to the settings page for Google Maps Shortcode.
+        </p>
+        <p>
+            This plugin requires a Google Maps API key to function
+        </p>
+        <p>
+            To obtain a Google maps API key:
+            <ol>
+                <li>
+                    Log-in to your Google account or register if you do not have one.
+                </li>
+                <li>
+                    Visit <a href="https://console.developers.google.com/apis/credentials">https://console.developers.google.com/apis/credentials</a>.
+                </li>
+                <li>
+                    Click the 'Generate credentials' button at the top of the page/
+                </li>
+                <li>
+                    Select 'API Key' from the dropdown menu.
+                </li>
+                <li>
+                    Select 'Browser Key'.
+                </li>
+                <li>
+                    Enter a name for your API access, such as 'My Blog'.
+                </li>
+                <li>
+                    Recommended: Enter the URL to your blog, such as 'myblog.com'.
+                </li>
+                <li>
+                    Click 'Create'.
+                </li>
+                <li>
+                    Copy and paste your API Key to the field below.
+                </li>
+            </ol>
+        </p>
+
+        <form method="post" action="options.php">
+            <?php settings_fields( 'f13-gms-settings-group' ); ?>
+            <?php do_settings_sections( 'f13-gms-settings-group' ); ?>
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">
+                        Google Maps API Key:
+                    </th>
+                    <td>
+                        <input type="password" name="google_maps_api_key" value="<?php echo esc_attr( get_option( 'google_maps_api_key' ) ); ?>" style="width: 50%;"/>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">
+                        Cache timeout (minutes):
+                    </th>
+                    <td>
+                        <input type="number" name="google_maps_cache_timeout" value="<?php echo esc_attr( get_option( 'google_maps_cache_timeout' ) ); ?>" style="width: 75px;"/>
+                    </td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+        <h3>Shortcode example</h3>
+        <p>
+            If you wish to display a map to Harrod, London:
+        </p>
+        <p>
+            [googlemap building="87-135" road="Brompton road" town="London" country="UK"]
+        </p>
+    </div>
+<?php
 }
