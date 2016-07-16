@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Google Maps Shortcode
+Plugin Name: F13 Google Maps Shortcode
 Plugin URI: http://f13dev.com/wordpress-plugin-google-maps-shortcode/
 Description: Add a Google Maps reference to your WordPress website using shortcode
 Version: 1.0
@@ -30,6 +30,8 @@ add_action( 'wp_enqueue_scripts', 'f13_google_maps_shortcode_stylesheet');
 
 function f13_google_maps_shortcode( $atts, $content = null )
 {
+    $key = '';
+
     // Get the attributes
     extract( shortcode_atts ( array (
         'postcode' => 'none', // Default postcode won't show a map
@@ -56,9 +58,7 @@ function f13_google_maps_shortcode( $atts, $content = null )
         }
         // Set the testing string
         $string = '
-        Postcode: ' . $postcode . '<br />
-        Cachetime: ' . $cachetime;
-
+        <iframe src="https://www.google.com/maps/embed/v1/place?q=' . $postcode . '&key=' . $key . '" style="width: 100%; height: 400px;"></iframe>';
         // Set the cache using the newly created string
         set_transient('f13gms' . md5(serialize($atts)), $string, $cachetime);
 
