@@ -34,7 +34,12 @@ function f13_google_maps_shortcode( $atts, $content = null )
 
     // Get the attributes
     extract( shortcode_atts ( array (
-        'postcode' => 'none', // Default postcode won't show a map
+        'building' => '', // Default building of null
+        'road' => '', // Default road of null
+        'town' => '', // Default town of null
+        'country' => '', // Default country of null
+        'width' => '100%', // Default width of 100%
+        'height' => '400px', // Default height of 400px
         'cachetime' => '0' // Default cache time of 0
     ), $atts ));
 
@@ -56,12 +61,23 @@ function f13_google_maps_shortcode( $atts, $content = null )
         {
             $cachetime = 1;
         }
-        // Set the testing string
-        $string = '
-        <iframe src="https://www.google.com/maps/embed/v1/place?q=' . $postcode . '&key=' . $key . '" style="width: 100%; height: 400px;"></iframe>';
-        // Set the cache using the newly created string
-        set_transient('f13gms' . md5(serialize($atts)), $string, $cachetime);
-
+        // Check if a postcode has been entered
+        if ($building == '' && $road == '' && $town == '')
+        {
+            // If no postcode has been entered, allert the user
+            $string = 'At least one or more attributes must be set for: building, road or town.';
+        }
+        else
+        {
+            // Create the search string
+            $mapSearch = $building . ' ' . $road . ' ' . $town . '' . $country;
+            $mapSearch = str_replace('&', ' ', $mapSearch);
+            // Set the testing string
+            $string = '
+            <iframe src="https://www.google.com/maps/embed/v1/place?q=' . $mapSearch . '&key=' . $key . '" style="width: ' . $width . '; height: ' . $height . ';"></iframe>';
+            // Set the cache using the newly created string
+            set_transient('f13gms' . md5(serialize($atts)), $string, $cachetime);
+        }
         // Return the newly created string
         return $string;
     }
