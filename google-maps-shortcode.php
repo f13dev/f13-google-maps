@@ -30,7 +30,43 @@ add_action( 'wp_enqueue_scripts', 'f13_google_maps_shortcode_stylesheet');
 
 function f13_google_maps_shortcode( $atts, $content = null )
 {
-  // Create the shortcode
+    // Get the attributes
+    extract( shortcode_atts ( array (
+        'postcode' => 'none', // Default postcode won't show a map
+        'cachetime' => '0' // Default cache time of 0
+    ), $atts ));
+
+    // Set the cache name for this instance of the shortcode
+    $cache = get_transient('f13gms' . md5(serialize($atts)));
+
+    // Check if the cache exists
+    if ($cache)
+    {
+        // If the cache exists, return it rather than re-creating it
+        return $cache;
+    }
+    else
+    {
+        // Multiply the cahce time by 60 to produce a time in minutes
+        $cachetime = $cachetime * 60;
+        // If the cachetime is 0, set it to one, otherwise the cache will never expire
+        if ($cachetime == 0 || $cachetime == null)
+        {
+            $cachetime = 1;
+        }
+        // Set the testing string
+        $string = '
+        Postcode: ' . $postcode . '<br />
+        Cachetime: ' . $cachetime;
+
+        // Set the cache using the newly created string
+        set_transient('f13gms' . md5(serialize($atts)), $string, $cachetime);
+
+        // Return the newly created string
+        return $string;
+    }
+
+    // Create the shortcode
 }
 
 function f13_google_maps_shortcode_stylesheet()
