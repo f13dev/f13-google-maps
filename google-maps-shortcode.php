@@ -146,7 +146,7 @@ function f13_gms_settings_page()
                     Enter a name for your API access, such as 'My Blog'.
                 </li>
                 <li>
-                    Recommended: Enter the URL to your blog, such as 'myblog.com'.
+                    Enter the URL to your blog, such as 'myblog.com', if you receive an API Error, try leaving this field blank.
                 </li>
                 <li>
                     Click 'Create'.
