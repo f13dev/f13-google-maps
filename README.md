@@ -2,11 +2,11 @@
 Add a Google Maps map to your WordPress powered website using shortcode
 
 # Plugin Details
-Website: http://f13dev.com/wordpress-plugin-google-maps-shortcode/
+Website: https://f13.dev/wordpress-plugin-google-maps-shortcode/
 Tags: google maps, maps, plugin, api, shortcode
 Requires WP Version: 3.0.1
-Tested up to WP Version: 4.5.3
-Stable tag: 1.0
+Tested up to WP Version: 5.8.1
+Stable tag: 2.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -51,7 +51,7 @@ The results of adding [googlemap building="Harrods" town="London"] to a blog pos
 1.0
 * Initial release
 
-# Upgrade Notice
-
-1.0
-* Initial release
+2.0.0
+* Refactoring into MVC layout
+* Responsive maps
+* Modernising codebase

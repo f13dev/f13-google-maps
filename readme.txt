@@ -1,10 +1,9 @@
 === Plugin Name ===
 Contributors: f13dev
-Donate link: http://f13dev.com/wordpress-plugin-google-maps-shortcode/
 Tags: google maps, maps, plugin, api, shortcode
 Requires at least: 3.0.1
-Tested up to: 4.5.3
-Stable tag: 1.0
+Tested up to: 5.8.1
+Stable tag: 2.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -18,9 +17,9 @@ In order to use this plugin you will require a Google Maps API Key, of which ins
 
 Features include:
 
-* Cached using Transient to save PHP server load (Maps are still called from Google on each page load)
 * Maps can be generated using a combination of: Building, Road, Town and Country
 * Requires a Google Maps API Key, full instructions are provided in the admin panel
+* Responsive design
 
 == Installation ==
 
@@ -49,7 +48,9 @@ Settings => F13 Google Maps Settings
 
 == Upgrade Notice ==
 
-= 1.0 =
-Initial release
+= 2.0.0 =
+* Refactoring into MVC layout
+* Responsive maps
+* Modernising codebase
 
 == Arbitrary section ==

@@ -1,0 +1,2 @@
+.f13-google-maps-container { width: 100%; position: relative; height: 0px; padding-bottom: 56.25%; border: 1px solid #ccc; margin-bottom: 10px; }
+.f13-google-maps-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% + 1px); border: 0; }
